@@ -1,11 +1,5 @@
 package bst;
 
-import trees.SimpleTreeNode;
-
-import java.io.*;
-import java.util.*;
-
-
 class BSTNode<T> {
     public int NodeKey; // ключ узла
     public T NodeValue; // значение в узле
@@ -120,7 +114,7 @@ class BST<T> {
     public boolean DeleteNodeByKey(int key) {
         BSTFind<T> find = FindNodeByKey(key);
 
-        if (find.Node == null || ! find.NodeHasKey) {
+        if (find.Node == null || !find.NodeHasKey) {
             return false;
         }
 
