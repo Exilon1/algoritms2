@@ -31,10 +31,43 @@ public class BSTTest {
         bst.AddKeyValue(130,10);
     }
 
-    void initializeSingleNode() {
+    private void initializeSingleNode() {
         BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
 
         bst = new BST<>(nodeZero);
+    }
+
+    private void initializeSecondPreset() {
+        BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
+
+        bst = new BST<>(nodeZero);
+
+        bst.AddKeyValue(-100,1);
+        bst.AddKeyValue(100,2);
+        bst.AddKeyValue(50,3);
+    }
+
+    private void initializeThirdPreset() {
+        BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
+
+        bst = new BST<>(nodeZero);
+
+        bst.AddKeyValue(-100,1);
+        bst.AddKeyValue(100,2);
+        bst.AddKeyValue(150,3);
+    }
+
+    private void initializeFourthPreset() {
+        BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
+
+        bst = new BST<>(nodeZero);
+
+        bst.AddKeyValue(-100,1);
+        bst.AddKeyValue(100,2);
+        bst.AddKeyValue(50,3);
+        bst.AddKeyValue(150,4);
+        bst.AddKeyValue(40,5);
+        bst.AddKeyValue(30,6);
     }
 
     @Test
@@ -54,8 +87,6 @@ public class BSTTest {
         assertEquals(175, findTwo.Node.NodeKey);
         assertFalse(findTwo.NodeHasKey);
         assertTrue(findTwo.ToLeft);
-
-        bst.Root = null;
 
         initializeSingleNode();
 
@@ -159,8 +190,6 @@ public class BSTTest {
         assertNotEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
         assertEquals(9, bst.Count());
 
-        bst.Root = null;
-
         initializeSingleNode();
 
         assertEquals(1, bst.Count());
@@ -168,5 +197,26 @@ public class BSTTest {
         bst.DeleteNodeByKey(0);
         assertNull(bst.FindNodeByKey(0).Node);
         assertEquals(0, bst.Count());
+
+        initializeSecondPreset();
+
+        assertEquals(4, bst.Count());
+        bst.DeleteNodeByKey(100);
+        assertNotEquals(100, bst.FindNodeByKey(100).Node.NodeKey);
+        assertEquals(3, bst.Count());
+
+        initializeThirdPreset();
+
+        assertEquals(4, bst.Count());
+        bst.DeleteNodeByKey(100);
+        assertNotEquals(100, bst.FindNodeByKey(100).Node.NodeKey);
+        assertEquals(3, bst.Count());
+
+        initializeFourthPreset();
+
+        assertEquals(7, bst.Count());
+        bst.DeleteNodeByKey(0);
+        assertNotEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
+        assertEquals(6, bst.Count());
     }
 }

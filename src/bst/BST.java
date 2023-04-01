@@ -194,6 +194,7 @@ class BST<T> {
 
         node.Parent = nodeToDelete.Parent;
         node.LeftChild = nodeToDelete.LeftChild;
+        node.RightChild = nodeToDelete.RightChild;
 
         if (nodeToDelete.Parent == null) {
             Root = node;
