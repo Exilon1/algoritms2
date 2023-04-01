@@ -1,18 +1,19 @@
 package bst;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BSTTest {
 
-    private static BST<Integer> bst;
+    private BST<Integer> bst;
 
-    @BeforeAll
-    static void initialize() {
+    @BeforeEach
+    void initialize() {
         BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
 
         bst = new BST<>(nodeZero);
@@ -21,18 +22,19 @@ public class BSTTest {
         bst.AddKeyValue(100,2);
         bst.AddKeyValue(-150,3);
         bst.AddKeyValue(-50,4);
-        bst.AddKeyValue(150,5);
-        bst.AddKeyValue(125,6);
-        bst.AddKeyValue(175,7);
-        bst.AddKeyValue(120,8);
-        bst.AddKeyValue(130,9);
+        bst.AddKeyValue(50,5);
+        bst.AddKeyValue(150,6);
+        bst.AddKeyValue(125,7);
+        bst.AddKeyValue(175,8);
+        bst.AddKeyValue(120,9);
+        bst.AddKeyValue(130,10);
     }
 
     @Test
     void findNodeByKeyTest() {
         BSTFind<Integer> find = bst.FindNodeByKey(130);
 
-        assertEquals(9, find.Node.NodeValue);
+        assertEquals(10, find.Node.NodeValue);
         assertTrue(find.NodeHasKey);
 
         BSTFind<Integer> findOne = bst.FindNodeByKey(180);
@@ -49,7 +51,7 @@ public class BSTTest {
 
     @Test
     void addKeyValueTest() {
-        assertEquals(10, bst.Count());
+        assertEquals(11, bst.Count());
 
         BSTFind<Integer> find = bst.FindNodeByKey(133);
         assertEquals(130, find.Node.NodeKey);
@@ -67,7 +69,7 @@ public class BSTTest {
         assertEquals(130, find.Node.Parent.NodeKey);
         assertEquals(133, find.Node.Parent.RightChild.NodeKey);
 
-        assertEquals(11, bst.Count());
+        assertEquals(12, bst.Count());
 
         bst.AddKeyValue(127,11);
 
@@ -77,7 +79,7 @@ public class BSTTest {
         assertEquals(130, find.Node.Parent.NodeKey);
         assertEquals(127, find.Node.Parent.LeftChild.NodeKey);
 
-        assertEquals(12, bst.Count());
+        assertEquals(13, bst.Count());
 
         bst.AddKeyValue(130,99);
 
@@ -86,7 +88,7 @@ public class BSTTest {
         assertEquals(130, find.Node.NodeKey);
         assertEquals(99, find.Node.NodeValue);
 
-        assertEquals(12, bst.Count());
+        assertEquals(13, bst.Count());
     }
 
     @Test
@@ -94,22 +96,24 @@ public class BSTTest {
         assertEquals(175, bst.FinMinMax(bst.Root, true).NodeKey);
         assertEquals(-150, bst.FinMinMax(bst.Root, false).NodeKey);
 
-        BSTFind<Integer> find = bst.FindNodeByKey(100);
+        BSTFind<Integer> find = bst.FindNodeByKey(150);
 
         assertEquals(175, bst.FinMinMax(find.Node, true).NodeKey);
-        assertEquals(100, bst.FinMinMax(find.Node, false).NodeKey);
+        assertEquals(120, bst.FinMinMax(find.Node, false).NodeKey);
     }
 
     @Test
     void deleteNodeByKeyTest() {
+        assertEquals(11, bst.Count());
+        assertEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
+        bst.DeleteNodeByKey(120);
+        assertNotEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
+
         assertEquals(10, bst.Count());
 
-        assertEquals(100, bst.FindNodeByKey(100).Node.NodeKey);
-
-        bst.DeleteNodeByKey(150);
-
-        assertEquals(130, bst.FindNodeByKey(150).Node.NodeKey);
-
+        assertEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
+        bst.DeleteNodeByKey(130);
+        assertNotEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
         assertEquals(9, bst.Count());
     }
 }
