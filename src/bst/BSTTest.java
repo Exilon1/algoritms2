@@ -31,6 +31,12 @@ public class BSTTest {
         bst.AddKeyValue(130,10);
     }
 
+    void initializeSingleNode() {
+        BSTNode<Integer> nodeZero = new BSTNode<>(0, 1, null);
+
+        bst = new BST<>(nodeZero);
+    }
+
     @Test
     void findNodeByKeyTest() {
         BSTFind<Integer> find = bst.FindNodeByKey(130);
@@ -48,6 +54,17 @@ public class BSTTest {
         assertEquals(175, findTwo.Node.NodeKey);
         assertFalse(findTwo.NodeHasKey);
         assertTrue(findTwo.ToLeft);
+
+        bst.Root = null;
+
+        initializeSingleNode();
+
+        assertEquals(0, bst.FindNodeByKey(100).Node.NodeKey);
+        assertEquals(0, bst.FindNodeByKey(-100).Node.NodeKey);
+
+        bst.Root = null;
+
+        assertNull(bst.FindNodeByKey(0).Node);
     }
 
     @Test
@@ -120,11 +137,6 @@ public class BSTTest {
 
     @Test
     void deleteSingleNodeByKeyTest() {
-//        assertEquals(3, bst.Count());
-//        assertEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
-//        bst.DeleteNodeByKey(0);
-//        assertNotEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
-//        assertEquals(2, bst.Count());
         assertEquals(11, bst.Count());
         assertEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
         bst.DeleteNodeByKey(120);
@@ -136,5 +148,15 @@ public class BSTTest {
         bst.DeleteNodeByKey(130);
         assertNotEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
         assertEquals(9, bst.Count());
+
+        bst.Root = null;
+
+        initializeSingleNode();
+
+        assertEquals(1, bst.Count());
+        assertEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
+        bst.DeleteNodeByKey(0);
+        assertNull(bst.FindNodeByKey(0).Node);
+        assertEquals(0, bst.Count());
     }
 }
