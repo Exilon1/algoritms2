@@ -118,71 +118,86 @@ class BST<T> {
             return false;
         }
 
-        boolean containsInLeftParentNode = find.Node.Parent.LeftChild == find.Node;
-
-        if (find.Node.LeftChild == null && find.Node.RightChild == null) {
-            if (containsInLeftParentNode) {
-                find.Node.Parent.LeftChild = null;
-            } else {
-                find.Node.Parent.RightChild = null;
-            }
-
-            find.Node.Parent = null;
-            return true;
-        }
-
-        if (find.Node.RightChild == null) {
-            find.Node.LeftChild.Parent = find.Node.Parent;
-
-            if (containsInLeftParentNode) {
-                find.Node.Parent.LeftChild = find.Node.LeftChild;
-            } else {
-                find.Node.Parent.RightChild = find.Node.LeftChild;
-            }
-
-            find.Node.Parent = null;
-
-            return true;
-        }
-
-        if (find.Node.LeftChild == null) {
-            find.Node.RightChild.Parent = find.Node.Parent;
-
-            if (containsInLeftParentNode) {
-                find.Node.Parent.LeftChild = find.Node.RightChild;
-            } else {
-                find.Node.Parent.RightChild = find.Node.RightChild;
-            }
-
-            find.Node.Parent = null;
-
-            return true;
-        }
-
-        BSTNode<T> node = FinMinMax(find.Node.RightChild, false);
-
-        if (node.Parent.LeftChild == node) {
-            node.Parent.LeftChild = null;
-        } else {
-            node.Parent.RightChild = null;
-        }
-
-        node.Parent = find.Node.Parent;
-        node.LeftChild = find.Node.LeftChild;
-
-        if (node != find.Node.RightChild) {
-            node.RightChild = find.Node.RightChild;
-        }
-
-        if (containsInLeftParentNode) {
-            find.Node.Parent.LeftChild = node;
-        } else {
-            find.Node.Parent.RightChild = node;
-        }
-
-        find.Node.Parent = null;
+        deleteNodeByKey(find.Node);
 
         return true;
+    }
+    public void deleteNodeByKey(BSTNode<T> nodeToDelete) {
+        if (nodeToDelete.LeftChild == null && nodeToDelete.RightChild == null) {
+            if (nodeToDelete.Parent == null) {
+                Root = null;
+                return;
+            }
+
+            if (nodeToDelete.Parent.LeftChild == nodeToDelete) {
+                nodeToDelete.Parent.LeftChild = null;
+            } else {
+                nodeToDelete.Parent.RightChild = null;
+            }
+
+            nodeToDelete.Parent = null;
+            return;
+        }
+
+        if (nodeToDelete.RightChild == null) {
+            if (nodeToDelete.Parent == null) {
+                Root = nodeToDelete.LeftChild;
+                Root.Parent = null;
+                return;
+            }
+
+            nodeToDelete.LeftChild.Parent = nodeToDelete.Parent;
+
+            if (nodeToDelete.Parent.LeftChild == nodeToDelete) {
+                nodeToDelete.Parent.LeftChild = nodeToDelete.LeftChild;
+            } else {
+                nodeToDelete.Parent.RightChild = nodeToDelete.LeftChild;
+            }
+
+            nodeToDelete.Parent = null;
+
+            return;
+        }
+
+        if (nodeToDelete.LeftChild == null) {
+            if (nodeToDelete.Parent == null) {
+                Root = nodeToDelete.RightChild;
+                Root.Parent = null;
+                return;
+            }
+
+            nodeToDelete.RightChild.Parent = nodeToDelete.Parent;
+
+            if (nodeToDelete.Parent.LeftChild == nodeToDelete) {
+                nodeToDelete.Parent.LeftChild = nodeToDelete.RightChild;
+            } else {
+                nodeToDelete.Parent.RightChild = nodeToDelete.RightChild;
+            }
+
+            nodeToDelete.Parent = null;
+
+            return;
+        }
+
+        BSTNode<T> node = FinMinMax(nodeToDelete.RightChild, false);
+
+        deleteNodeByKey(node);
+
+        node.Parent = nodeToDelete.Parent;
+        node.LeftChild = nodeToDelete.LeftChild;
+
+        if (nodeToDelete.Parent == null) {
+            Root = node;
+            return;
+        }
+
+        if (nodeToDelete.Parent.LeftChild == nodeToDelete) {
+            nodeToDelete.Parent.LeftChild = node;
+        } else {
+            nodeToDelete.Parent.RightChild = node;
+        }
+
+        nodeToDelete.Parent = null;
     }
 
     public int Count() {

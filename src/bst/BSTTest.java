@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BSTTest {
@@ -104,6 +105,26 @@ public class BSTTest {
 
     @Test
     void deleteNodeByKeyTest() {
+        assertEquals(11, bst.Count());
+        assertEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
+        bst.DeleteNodeByKey(120);
+        assertNotEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
+
+        assertEquals(10, bst.Count());
+
+        assertEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
+        bst.DeleteNodeByKey(130);
+        assertNotEquals(130, bst.FindNodeByKey(130).Node.NodeKey);
+        assertEquals(9, bst.Count());
+    }
+
+    @Test
+    void deleteSingleNodeByKeyTest() {
+//        assertEquals(3, bst.Count());
+//        assertEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
+//        bst.DeleteNodeByKey(0);
+//        assertNotEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
+//        assertEquals(2, bst.Count());
         assertEquals(11, bst.Count());
         assertEquals(120, bst.FindNodeByKey(120).Node.NodeKey);
         bst.DeleteNodeByKey(120);
