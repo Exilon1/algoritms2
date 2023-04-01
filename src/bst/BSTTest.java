@@ -107,6 +107,16 @@ public class BSTTest {
         assertEquals(99, find.Node.NodeValue);
 
         assertEquals(13, bst.Count());
+
+        bst.Root = null;
+
+        assertEquals(0, bst.Count());
+
+        bst.AddKeyValue(100,1);
+        find = bst.FindNodeByKey(100);
+
+        assertEquals(100, find.Node.NodeKey);
+        assertEquals(1, bst.Count());
     }
 
     @Test

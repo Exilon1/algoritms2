@@ -89,6 +89,11 @@ class BST<T> {
 
         BSTNode<T> newNode = new BSTNode<>(key, val, find.Node);
 
+        if (find.Node == null) {
+            Root = newNode;
+            return true;
+        }
+
         if (find.ToLeft) {
             find.Node.LeftChild = newNode;
         } else {
@@ -99,6 +104,10 @@ class BST<T> {
     }
 
     public BSTNode<T> FinMinMax(BSTNode<T> FromNode, boolean FindMax) {
+        if (FromNode == null) {
+            return null;
+        }
+
         if ((FindMax && FromNode.RightChild == null) ||
                 (!FindMax && FromNode.LeftChild == null)) {
             return FromNode;
