@@ -205,6 +205,13 @@ public class BSTTest {
         assertNotEquals(100, bst.FindNodeByKey(100).Node.NodeKey);
         assertEquals(3, bst.Count());
 
+        initializeSecondPreset();
+
+        assertEquals(4, bst.Count());
+        bst.DeleteNodeByKey(-100);
+        assertNotEquals(-100, bst.FindNodeByKey(-100).Node.NodeKey);
+        assertEquals(3, bst.Count());
+
         initializeThirdPreset();
 
         assertEquals(4, bst.Count());
