@@ -300,7 +300,7 @@ class BST<T> {
         return lavelNodeList;
     }
 
-    private static List<Boolean> addOneToBinaryNumber(List<Boolean> binaryNum) {
+    private List<Boolean> addOneToBinaryNumber(List<Boolean> binaryNum) {
         LinkedList<Boolean> result = new LinkedList<>();
         boolean flipNext = false;
 
@@ -341,7 +341,7 @@ class BST<T> {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public List<BSTNode<T>> deepAllNodes(int order, BSTNode<T> node) {
+    private List<BSTNode<T>> deepAllNodes(int order, BSTNode<T> node) {
         List<BSTNode<T>> deepNodeList = new ArrayList<>();
 
         if (node == null) {
