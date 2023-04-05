@@ -1,5 +1,12 @@
 package bst;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 class BSTNode<T> {
     public int NodeKey; // ключ узла
     public T NodeValue; // значение в узле
@@ -131,6 +138,7 @@ class BST<T> {
 
         return true;
     }
+
     public void deleteNodeByKey(BSTNode<T> nodeToDelete) {
         if (nodeToDelete.LeftChild == null &&
                 nodeToDelete.RightChild == null &&
@@ -237,4 +245,133 @@ class BST<T> {
         return count;
     }
 
+    public ArrayList<BSTNode> WideAllNodes() {
+        ArrayList<BSTNode> wideNodeList = new ArrayList<>();
+        List<Boolean> rightChildren = new LinkedList<>();
+
+        if (Root == null) {
+            return wideNodeList;
+        }
+
+        wideNodeList.add(Root);
+        rightChildren.add(false);
+
+        while (true) {
+            List<BSTNode<T>> levelNodes = wideLevelNodes(Root, rightChildren);
+
+            if (levelNodes.isEmpty()) {
+                break;
+            }
+            wideNodeList.addAll(levelNodes);
+
+            rightChildren.add(false);
+        }
+
+        return wideNodeList;
+    }
+
+    private List<BSTNode<T>> wideLevelNodes(BSTNode<T> node, List<Boolean> rightChildren) {
+        List<BSTNode<T>> lavelNodeList = new ArrayList<>();
+        List<Boolean> nextRightChildren = rightChildren;
+
+        for (int i = 0; i < new BigInteger(String.valueOf(2)).pow(rightChildren.size()).intValue(); i++) {
+
+            BSTNode<T> nextNode = node;
+
+            for (boolean right : nextRightChildren) {
+                if (nextNode == null) {
+                    break;
+                }
+
+                if (right) {
+                    nextNode = nextNode.RightChild;
+                } else {
+                    nextNode = nextNode.LeftChild;
+                }
+            }
+
+            if (nextNode != null) {
+                lavelNodeList.add(nextNode);
+            }
+
+            nextRightChildren = addOneToBinaryNumber(nextRightChildren);
+        }
+
+        return lavelNodeList;
+    }
+
+    private static List<Boolean> addOneToBinaryNumber(List<Boolean> binaryNum) {
+        LinkedList<Boolean> result = new LinkedList<>();
+        boolean flipNext = false;
+
+        for (int i = binaryNum.size() - 1; i >= 0; i--) {
+            boolean val = binaryNum.get(i);
+
+            if (!val && i == binaryNum.size() - 1) {
+                result.addFirst(true);
+                continue;
+            }
+
+            if (val && i == binaryNum.size() - 1) {
+                result.addFirst(false);
+                flipNext = true;
+                continue;
+            }
+
+            if (val && flipNext) {
+                result.addFirst(false);
+                continue;
+            }
+
+            if (flipNext) {
+                result.addFirst(true);
+                flipNext = false;
+                continue;
+            }
+
+            result.addFirst(val);
+        }
+
+        return result;
+    }
+
+    public ArrayList<BSTNode> DeepAllNodes(int order) {
+        return deepAllNodes(order, Root).stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public List<BSTNode<T>> deepAllNodes(int order, BSTNode<T> node) {
+        List<BSTNode<T>> deepNodeList = new ArrayList<>();
+
+        if (node == null) {
+            return deepNodeList;
+        }
+
+        if (order == 0) {
+            deepNodeList.addAll(deepAllNodes(order, node.LeftChild));
+            deepNodeList.add(node);
+            deepNodeList.addAll(deepAllNodes(order, node.RightChild));
+
+            return deepNodeList;
+        }
+
+        if (order == 1) {
+            deepNodeList.addAll(deepAllNodes(order, node.LeftChild));
+            deepNodeList.addAll(deepAllNodes(order, node.RightChild));
+            deepNodeList.add(node);
+
+            return deepNodeList;
+        }
+
+        if (order == 2) {
+            deepNodeList.add(node);
+            deepNodeList.addAll(deepAllNodes(order, node.LeftChild));
+            deepNodeList.addAll(deepAllNodes(order, node.RightChild));
+
+            return deepNodeList;
+        }
+
+        return deepNodeList;
+    }
 }

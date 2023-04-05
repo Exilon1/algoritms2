@@ -3,6 +3,8 @@ package bst;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -225,5 +227,75 @@ public class BSTTest {
         bst.DeleteNodeByKey(0);
         assertNotEquals(0, bst.FindNodeByKey(0).Node.NodeKey);
         assertEquals(6, bst.Count());
+    }
+
+    @Test
+    void wideAllNodesTest() {
+        ArrayList<BSTNode> nodes = bst.WideAllNodes();
+
+        assertEquals(11, nodes.size());
+
+        assertEquals(0, nodes.get(0).NodeKey);
+        assertEquals(-100, nodes.get(1).NodeKey);
+        assertEquals(100, nodes.get(2).NodeKey);
+        assertEquals(-150, nodes.get(3).NodeKey);
+        assertEquals(-50, nodes.get(4).NodeKey);
+        assertEquals(50, nodes.get(5).NodeKey);
+        assertEquals(150, nodes.get(6).NodeKey);
+        assertEquals(125, nodes.get(7).NodeKey);
+        assertEquals(175, nodes.get(8).NodeKey);
+        assertEquals(120, nodes.get(9).NodeKey);
+        assertEquals(130, nodes.get(10).NodeKey);
+    }
+
+    @Test
+    void deepAllNodesTest() {
+        ArrayList<BSTNode> nodes = bst.DeepAllNodes(0);
+
+        assertEquals(11, nodes.size());
+
+        assertEquals(-150, nodes.get(0).NodeKey);
+        assertEquals(-100, nodes.get(1).NodeKey);
+        assertEquals(-50, nodes.get(2).NodeKey);
+        assertEquals(0, nodes.get(3).NodeKey);
+        assertEquals(50, nodes.get(4).NodeKey);
+        assertEquals(100, nodes.get(5).NodeKey);
+        assertEquals(120, nodes.get(6).NodeKey);
+        assertEquals(125, nodes.get(7).NodeKey);
+        assertEquals(130, nodes.get(8).NodeKey);
+        assertEquals(150, nodes.get(9).NodeKey);
+        assertEquals(175, nodes.get(10).NodeKey);
+
+        nodes = bst.DeepAllNodes(1);
+
+        assertEquals(11, nodes.size());
+
+        assertEquals(-150, nodes.get(0).NodeKey);
+        assertEquals(-50, nodes.get(1).NodeKey);
+        assertEquals(-100, nodes.get(2).NodeKey);
+        assertEquals(50, nodes.get(3).NodeKey);
+        assertEquals(120, nodes.get(4).NodeKey);
+        assertEquals(130, nodes.get(5).NodeKey);
+        assertEquals(125, nodes.get(6).NodeKey);
+        assertEquals(175, nodes.get(7).NodeKey);
+        assertEquals(150, nodes.get(8).NodeKey);
+        assertEquals(100, nodes.get(9).NodeKey);
+        assertEquals(0, nodes.get(10).NodeKey);
+
+        nodes = bst.DeepAllNodes(2);
+
+        assertEquals(11, nodes.size());
+
+        assertEquals(0, nodes.get(0).NodeKey);
+        assertEquals(-100, nodes.get(1).NodeKey);
+        assertEquals(-150, nodes.get(2).NodeKey);
+        assertEquals(-50, nodes.get(3).NodeKey);
+        assertEquals(100, nodes.get(4).NodeKey);
+        assertEquals(50, nodes.get(5).NodeKey);
+        assertEquals(150, nodes.get(6).NodeKey);
+        assertEquals(125, nodes.get(7).NodeKey);
+        assertEquals(120, nodes.get(8).NodeKey);
+        assertEquals(130, nodes.get(9).NodeKey);
+        assertEquals(175, nodes.get(10).NodeKey);
     }
 }
