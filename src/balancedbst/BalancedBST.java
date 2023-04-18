@@ -87,38 +87,42 @@ class BalancedBST {
         int minLevel = Integer.MAX_VALUE;
         int maxLevel = 0;
 
-        for (BSTNode node : getAllLeafs(Root)) {
-            if (minLevel > node.Level) {
-                minLevel = node.Level;
+        for (Integer level : getAllLeafs(Root)) {
+            if (minLevel > level) {
+                minLevel = level;
             }
 
-            if (maxLevel < node.Level) {
-                maxLevel = node.Level;
+            if (maxLevel < level) {
+                maxLevel = level;
             }
         }
 
         return maxLevel - minLevel <= 1;
     }
 
-    private List<BSTNode> getAllLeafs(BSTNode node) {
-        List<BSTNode> leafs = new ArrayList<>();
-
-        if (node == null) {
-            return leafs;
-        }
+    private List<Integer> getAllLeafs(BSTNode node) {
+        List<Integer> levels = new ArrayList<>();
 
         if (node.LeftChild == null && node.RightChild == null) {
-            leafs.add(node);
+            levels.add(node.Level);
+            return levels;
         }
 
-        if (node.LeftChild != null) {
-            leafs.addAll(getAllLeafs(node.LeftChild));
+        if (node.LeftChild == null) {
+            levels.add(node.Level);
+            levels.addAll(getAllLeafs(node.RightChild));
+            return levels;
         }
 
-        if (node.RightChild != null) {
-            leafs.addAll(getAllLeafs(node.RightChild));
+        if (node.RightChild == null) {
+            levels.add(node.Level);
+            levels.addAll(getAllLeafs(node.LeftChild));
+            return levels;
         }
 
-        return leafs;
+        levels.addAll(getAllLeafs(node.LeftChild));
+        levels.addAll(getAllLeafs(node.RightChild));
+
+        return levels;
     }
 }

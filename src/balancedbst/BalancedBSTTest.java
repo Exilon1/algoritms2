@@ -14,7 +14,7 @@ public class BalancedBSTTest {
 
     @BeforeEach
     void initialize() {
-        arr = new int[]{
+        arr = new int[] {
                 -150,
                 -100,
                 -50,
@@ -27,7 +27,7 @@ public class BalancedBSTTest {
     }
 
     void initializeSecondPreset() {
-        arr = new int[]{
+        arr = new int[] {
                 -150,
                 -100,
                 0,
@@ -37,6 +37,17 @@ public class BalancedBSTTest {
                 150,
                 175
         };
+    }
+
+    void initializeThirdPreset() {
+        bst = new BalancedBST();
+
+        bst.Root = new BSTNode(50, null, 0);
+        bst.Root.RightChild = new BSTNode(75, bst.Root, 1);
+        bst.Root.RightChild.LeftChild = new BSTNode(62, bst.Root.RightChild, 2);
+        bst.Root.RightChild.RightChild = new BSTNode(84, bst.Root.RightChild, 2);
+        bst.Root.RightChild.LeftChild.LeftChild = new BSTNode(55, bst.Root.RightChild.LeftChild, 3);
+        bst.Root.RightChild.RightChild.RightChild = new BSTNode(92, bst.Root.RightChild.RightChild, 3);
     }
 
     @Test
@@ -70,6 +81,10 @@ public class BalancedBSTTest {
         initializeSecondPreset();
 
         bst.GenerateTree(arr);
+
+        assertFalse(bst.IsBalanced(bst.Root));
+
+        initializeThirdPreset();
 
         assertFalse(bst.IsBalanced(bst.Root));
     }
