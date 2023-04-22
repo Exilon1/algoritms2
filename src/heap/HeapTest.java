@@ -34,7 +34,7 @@ public class HeapTest {
 
         assertEquals(15, heap.HeapArray.length);
         assertEquals(6, heap.HeapArray[9]);
-        assertEquals(Integer.MIN_VALUE, heap.HeapArray[10]);
+        assertEquals(0, heap.HeapArray[10]);
     }
 
     @Test
@@ -42,26 +42,26 @@ public class HeapTest {
         heap.MakeHeap(arr, 3);
 
         assertEquals(11, heap.GetMax());
-        assertEquals(Integer.MIN_VALUE, heap.HeapArray[9]);
+        assertEquals(0, heap.HeapArray[9]);
         assertEquals(9, heap.HeapArray[0]);
         assertEquals(8, heap.HeapArray[1]);
         assertEquals(6, heap.HeapArray[4]);
 
         assertEquals(9, heap.GetMax());
-        assertEquals(Integer.MIN_VALUE, heap.HeapArray[8]);
+        assertEquals(0, heap.HeapArray[8]);
 
         assertEquals(8, heap.GetMax());
-        assertEquals(Integer.MIN_VALUE, heap.HeapArray[7]);
+        assertEquals(0, heap.HeapArray[7]);
     }
 
     @Test
     void addTest() {
         heap.MakeHeap(new int[0], 1);
 
-        assertTrue(heap.Add(0));
         assertTrue(heap.Add(1));
         assertTrue(heap.Add(2));
-        assertFalse(heap.Add(3));
+        assertTrue(heap.Add(3));
+        assertFalse(heap.Add(4));
 
         heap.MakeHeap(new int[0], 3);
 
@@ -86,7 +86,7 @@ public class HeapTest {
         assertEquals(2, heap.HeapArray[7]);
         assertEquals(5, heap.HeapArray[8]);
         assertEquals(6, heap.HeapArray[9]);
-        assertEquals(Integer.MIN_VALUE, heap.HeapArray[10]);
+        assertEquals(0, heap.HeapArray[10]);
 
     }
 }

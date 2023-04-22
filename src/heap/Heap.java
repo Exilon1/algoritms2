@@ -15,8 +15,6 @@ class Heap {
                 new BigInteger(String.valueOf(2)).pow(depth + 1).subtract(BigInteger.ONE).intValue()
                 ];
 
-        Arrays.fill(HeapArray, Integer.MIN_VALUE);
-
         System.arraycopy(a, 0, HeapArray, 0, a.length);
     }
 
@@ -30,7 +28,7 @@ class Heap {
         int rootValue = HeapArray[0];
         int currentValue = HeapArray[lastIndex];
 
-        HeapArray[lastIndex] = Integer.MIN_VALUE;
+        HeapArray[lastIndex] = 0;
         HeapArray[0] = currentValue;
 
         changePositionWithChildren(0);
@@ -109,7 +107,7 @@ class Heap {
         int lastIndex = -1;
 
         for (int i = HeapArray.length - 1; i >= 0; i--) {
-            if (HeapArray[i] != Integer.MIN_VALUE) {
+            if (HeapArray[i] != 0) {
                 lastIndex = i;
                 break;
             }
