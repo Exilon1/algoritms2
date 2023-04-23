@@ -28,6 +28,26 @@ public class HeapTest {
         };
     }
 
+    void initializeSecond() {
+        arr = new int[]{
+                110,
+                90,
+                40,
+                70,
+                80,
+                30,
+                10,
+                20,
+                50,
+                60,
+                65,
+                31,
+                29,
+                11,
+                9
+        };
+    }
+
     @Test
     void makeHeapTest() {
         heap.MakeHeap(arr, 3);
@@ -35,6 +55,26 @@ public class HeapTest {
         assertEquals(15, heap.HeapArray.length);
         assertEquals(6, heap.HeapArray[9]);
         assertEquals(0, heap.HeapArray[10]);
+
+        initializeSecond();
+
+        heap.MakeHeap(arr, 3);
+
+        assertEquals(110, heap.HeapArray[0]);
+        assertEquals(90, heap.HeapArray[1]);
+        assertEquals(40, heap.HeapArray[2]);
+        assertEquals(70, heap.HeapArray[3]);
+        assertEquals(80, heap.HeapArray[4]);
+        assertEquals(31, heap.HeapArray[5]);
+        assertEquals(11, heap.HeapArray[6]);
+        assertEquals(20, heap.HeapArray[7]);
+        assertEquals(50, heap.HeapArray[8]);
+        assertEquals(60, heap.HeapArray[9]);
+        assertEquals(65, heap.HeapArray[10]);
+        assertEquals(30, heap.HeapArray[11]);
+        assertEquals(29, heap.HeapArray[12]);
+        assertEquals(10, heap.HeapArray[13]);
+        assertEquals(9, heap.HeapArray[14]);
     }
 
     @Test

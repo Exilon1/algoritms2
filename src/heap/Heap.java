@@ -15,7 +15,11 @@ class Heap {
                 new BigInteger(String.valueOf(2)).pow(depth + 1).subtract(BigInteger.ONE).intValue()
                 ];
 
-        System.arraycopy(a, 0, HeapArray, 0, a.length);
+        int size = Math.min(a.length, HeapArray.length);
+
+        for (int i = 0; i < size; i++) {
+            Add(a[i]);
+        }
     }
 
     public int GetMax() {
