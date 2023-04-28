@@ -1,6 +1,11 @@
 package trees;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SimpleTreeNode<T> {
     public T NodeValue; // значение в узле
@@ -80,7 +85,7 @@ class SimpleTree<T> {
             return nodes;
         }
 
-        for (SimpleTreeNode<T> n: node.Children) {
+        for (SimpleTreeNode<T> n : node.Children) {
             nodes.addAll(getNodes(n));
         }
 
@@ -102,7 +107,7 @@ class SimpleTree<T> {
             return nodes;
         }
 
-        for (SimpleTreeNode<T> n: node.Children) {
+        for (SimpleTreeNode<T> n : node.Children) {
             nodes.addAll(findNodesByValue(val, n));
         }
 
@@ -131,7 +136,7 @@ class SimpleTree<T> {
             return count;
         }
 
-        for (SimpleTreeNode<T> n: node.Children) {
+        for (SimpleTreeNode<T> n : node.Children) {
             count = count + count(n);
         }
 
@@ -154,7 +159,7 @@ class SimpleTree<T> {
             return count;
         }
 
-        for (SimpleTreeNode<T> n: node.Children) {
+        for (SimpleTreeNode<T> n : node.Children) {
             count = count + leafCount(n);
         }
 
@@ -165,5 +170,86 @@ class SimpleTree<T> {
         return node.Children == null ||
                 node.Children.isEmpty() ||
                 node.Children.stream().allMatch(Objects::isNull);
+    }
+
+    public ArrayList<T> EvenTrees() {
+        if (Count() % 2 != 0) {
+            return new ArrayList<>();
+        }
+
+        int maxLevel = maxLevel();
+        Set<SimpleTreeNode<T>> parentsWithoutChildren = new HashSet<>();
+        List<SimpleTreeNode<T>> brokenPairs = new ArrayList<>();
+
+        for (int i = 0; i <= maxLevel; i++) {
+            List<SimpleTreeNode<T>> pairs = evenTrees(Root, parentsWithoutChildren);
+            brokenPairs.addAll(pairs);
+
+            for (int j = 0; j < pairs.size(); j++) {
+                if (j % 2 == 0) {
+                    parentsWithoutChildren.add(pairs.get(j));
+                }
+            }
+        }
+
+        return brokenPairs.stream()
+                .map(n -> n.NodeValue)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private List<SimpleTreeNode<T>> evenTrees(SimpleTreeNode<T> node, Set<SimpleTreeNode<T>> parentsWithoutChildren) {
+        List<SimpleTreeNode<T>> brokenPairs = new ArrayList<>();
+
+        if (childrenIsEmpty(node) || parentsWithoutChildren.contains(node)) {
+            return brokenPairs;
+        }
+
+        boolean hasLastChildrenAfterRemove = node.Children.stream().allMatch(
+                n -> childrenIsEmpty(n) || parentsWithoutChildren.contains(n));
+        int childrenCount = node.Children.size();
+
+        if (hasLastChildrenAfterRemove && node.Parent != null && childrenCount % 2 != 0) {
+            brokenPairs.add(node.Parent);
+            brokenPairs.add(node);
+
+            return brokenPairs;
+        }
+
+        if (hasLastChildrenAfterRemove && node.Parent != null && node.Parent.Parent != null) {
+            brokenPairs.add(node.Parent.Parent);
+            brokenPairs.add(node.Parent);
+
+            return brokenPairs;
+        }
+
+        node.Children.forEach(n -> brokenPairs.addAll(evenTrees(n, parentsWithoutChildren)));
+
+        return brokenPairs;
+    }
+
+    private int maxLevel() {
+        return maxLevel(Root);
+    }
+
+    private int maxLevel(SimpleTreeNode<T> node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int level = node.getLevel();
+
+        if (childrenIsEmpty(node)) {
+            return level;
+        }
+
+        for (SimpleTreeNode<T> n : node.Children) {
+            int childLevel = maxLevel(n);
+
+            if (childLevel > level) {
+                level = childLevel;
+            }
+        }
+
+        return level;
     }
 }
