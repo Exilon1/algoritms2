@@ -177,12 +177,12 @@ class SimpleTree<T> {
             return new ArrayList<>();
         }
 
-        int maxLevel = maxLevel();
         Set<SimpleTreeNode<T>> parentsWithoutChildren = new HashSet<>();
         List<SimpleTreeNode<T>> brokenPairs = new ArrayList<>();
+        List<SimpleTreeNode<T>> pairs;
 
-        for (int i = 0; i <= maxLevel; i++) {
-            List<SimpleTreeNode<T>> pairs = evenTrees(Root, parentsWithoutChildren);
+        do {
+            pairs = evenTrees(Root, parentsWithoutChildren);
             brokenPairs.addAll(pairs);
 
             for (int j = 0; j < pairs.size(); j++) {
@@ -190,7 +190,7 @@ class SimpleTree<T> {
                     parentsWithoutChildren.add(pairs.get(j));
                 }
             }
-        }
+        } while (!pairs.isEmpty());
 
         return brokenPairs.stream()
                 .map(n -> n.NodeValue)
@@ -225,31 +225,5 @@ class SimpleTree<T> {
         node.Children.forEach(n -> brokenPairs.addAll(evenTrees(n, parentsWithoutChildren)));
 
         return brokenPairs;
-    }
-
-    private int maxLevel() {
-        return maxLevel(Root);
-    }
-
-    private int maxLevel(SimpleTreeNode<T> node) {
-        if (node == null) {
-            return 0;
-        }
-
-        int level = node.getLevel();
-
-        if (childrenIsEmpty(node)) {
-            return level;
-        }
-
-        for (SimpleTreeNode<T> n : node.Children) {
-            int childLevel = maxLevel(n);
-
-            if (childLevel > level) {
-                level = childLevel;
-            }
-        }
-
-        return level;
     }
 }
