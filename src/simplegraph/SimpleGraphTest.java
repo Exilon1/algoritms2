@@ -3,6 +3,8 @@ package simplegraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -196,5 +198,26 @@ public class SimpleGraphTest {
         assertFalse(graph.IsEdge(1, 2));
         assertFalse(graph.IsEdge(2, 1));
         assertFalse(graph.IsEdge(2, 2));
+    }
+
+    @Test
+    void depthFirstSearchT() {
+        initialize();
+
+        graph.AddEdge(0, 0);
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(2, 2);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(3, 4);
+
+        List<Vertex> list = graph.DepthFirstSearch(0, 4);
+
+        assertEquals(4, list.size());
+        assertEquals(graph.vertex[0], list.get(0));
+        assertEquals(graph.vertex[2], list.get(1));
+        assertEquals(graph.vertex[3], list.get(2));
+        assertEquals(graph.vertex[4], list.get(3));
+
     }
 }

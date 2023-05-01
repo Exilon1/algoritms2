@@ -1,10 +1,23 @@
 package simplegraph;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 class Vertex {
     public int Value;
 
+    private boolean hit;
+
     public Vertex(int val) {
         Value = val;
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
     }
 }
 
@@ -89,5 +102,66 @@ class SimpleGraph {
         }
 
         m_adjacency[v1][v2] = 0;
+    }
+
+    public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
+        ArrayList<Vertex> list = new ArrayList<>();
+
+        if (VFrom < 0 ||
+                VTo < 0 ||
+                VFrom >= max_vertex ||
+                VTo >= max_vertex) {
+            return list;
+        }
+
+        clearSearchInfo();
+
+        list.addAll(depthFirstSearch(new LinkedList<>(), VFrom, VTo));
+
+        return list;
+    }
+
+    private LinkedList<Vertex> depthFirstSearch(LinkedList<Vertex> stack, int VFrom, int VTo) {
+        vertex[VFrom].setHit(true);
+
+        stack.addLast(vertex[VFrom]);
+
+        if (m_adjacency[VFrom][VTo] == 1) {
+            stack.addLast(vertex[VTo]);
+            return stack;
+        }
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (VFrom == i) {
+                continue;
+            }
+
+            if (m_adjacency[VFrom][i] == 1 && ! vertex[i].isHit()) {
+                return depthFirstSearch(stack, i, VTo);
+            }
+        }
+
+        stack.removeLast();
+
+        if (stack.isEmpty()) {
+            return stack;
+        }
+
+        int index = 0;
+        Vertex v = stack.removeLast();
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (v.equals(vertex[i])) {
+                index = i;
+            }
+        }
+
+        return depthFirstSearch(stack, index, VTo);
+    }
+
+    private void clearSearchInfo() {
+        for (Vertex v : vertex) {
+            v.setHit(false);
+        }
     }
 }
