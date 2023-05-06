@@ -27,6 +27,12 @@ public class SimpleGraphTest {
         graph.AddVertex(5);
     }
 
+    void initializeSecondPreset() {
+        graph.AddVertex(6);
+        graph.AddVertex(7);
+        graph.AddVertex(8);
+    }
+
     void addEdges() {
         graph.AddEdge(0, 0);
         graph.AddEdge(0, 1);
@@ -218,6 +224,29 @@ public class SimpleGraphTest {
         assertEquals(graph.vertex[2], list.get(1));
         assertEquals(graph.vertex[3], list.get(2));
         assertEquals(graph.vertex[4], list.get(3));
+    }
 
+    @Test
+    void breadthFirstSearch() {
+        graph = new SimpleGraph(8);
+
+        initialize();
+        initializeSecondPreset();
+        graph.AddEdge(0, 0);
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(2, 2);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(2, 4);
+        graph.AddEdge(1, 5);
+        graph.AddEdge(1, 6);
+        graph.AddEdge(1, 7);
+
+        List<Vertex> list = graph.BreadthFirstSearch(0, 7);
+
+        assertEquals(3, list.size());
+        assertEquals(graph.vertex[0], list.get(0));
+        assertEquals(graph.vertex[1], list.get(1));
+        assertEquals(graph.vertex[7], list.get(2));
     }
 }

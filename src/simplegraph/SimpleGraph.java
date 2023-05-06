@@ -136,7 +136,7 @@ class SimpleGraph {
                 continue;
             }
 
-            if (m_adjacency[VFrom][i] == 1 && ! vertex[i].isHit()) {
+            if (m_adjacency[VFrom][i] == 1 && !vertex[i].isHit()) {
                 return depthFirstSearch(stack, i, VTo);
             }
         }
@@ -147,14 +147,9 @@ class SimpleGraph {
             return stack;
         }
 
-        int index = 0;
         Vertex v = stack.removeLast();
 
-        for (int i = 0; i < max_vertex; i++) {
-            if (v.equals(vertex[i])) {
-                index = i;
-            }
-        }
+        int index = getVertexIndex(v);
 
         return depthFirstSearch(stack, index, VTo);
     }
@@ -163,5 +158,88 @@ class SimpleGraph {
         for (Vertex v : vertex) {
             v.setHit(false);
         }
+    }
+
+    private int getVertexIndex(Vertex v) {
+        int index = 0;
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (v.equals(vertex[i])) {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        ArrayList<Vertex> list = new ArrayList<>();
+
+        if (VFrom < 0 ||
+                VTo < 0 ||
+                VFrom >= max_vertex ||
+                VTo >= max_vertex) {
+            return list;
+        }
+
+        clearSearchInfo();
+
+        vertex[VFrom].setHit(true);
+
+        LinkedList<LinkedList<Vertex>> paths = new LinkedList<>();
+        LinkedList<Vertex> path = new LinkedList<>();
+        path.addLast(vertex[VFrom]);
+        paths.addLast(path);
+
+        list.addAll(breadthFirstSearch(new LinkedList<>(), paths, VFrom, VTo));
+
+        return list;
+    }
+
+    private LinkedList<Vertex> breadthFirstSearch(LinkedList<Vertex> queue, LinkedList<LinkedList<Vertex>> paths, int VFrom, int VTo) {
+        boolean found = false;
+
+        final Vertex v = vertex[VFrom];
+        LinkedList<Vertex> path = paths.stream()
+                .filter(p -> p.getLast().equals(v))
+                .findFirst()
+                .orElseGet(LinkedList::new);
+
+        paths.remove(path);
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (VFrom == i) {
+                continue;
+            }
+
+            if (m_adjacency[VFrom][i] == 1 && !vertex[i].isHit() && i == VTo) {
+                path.addLast(vertex[i]);
+                found = true;
+                break;
+            }
+
+            if (m_adjacency[VFrom][i] == 1 && !vertex[i].isHit()) {
+                vertex[i].setHit(true);
+                queue.addLast(vertex[i]);
+
+                LinkedList<Vertex> newPath = new LinkedList<>(path);
+                newPath.addLast(vertex[i]);
+                paths.addLast(newPath);
+            }
+        }
+
+
+        if (found) {
+            return path;
+        }
+
+        if (queue.isEmpty()) {
+            return new LinkedList<>();
+        }
+
+        Vertex vert = queue.removeFirst();
+        int index = getVertexIndex(vert);
+
+        return breadthFirstSearch(queue, paths, index, VTo);
     }
 }
