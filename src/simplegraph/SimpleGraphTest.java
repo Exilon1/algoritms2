@@ -33,6 +33,10 @@ public class SimpleGraphTest {
         graph.AddVertex(8);
     }
 
+    void initializeThirdPreset() {
+        graph.AddVertex(9);
+    }
+
     void addEdges() {
         graph.AddEdge(0, 0);
         graph.AddEdge(0, 1);
@@ -248,5 +252,35 @@ public class SimpleGraphTest {
         assertEquals(graph.vertex[0], list.get(0));
         assertEquals(graph.vertex[1], list.get(1));
         assertEquals(graph.vertex[7], list.get(2));
+    }
+
+    @Test
+    void weakVerticesTest() {
+        graph = new SimpleGraph(9);
+
+        initialize();
+        initializeSecondPreset();
+        initializeThirdPreset();
+
+        graph.AddEdge(0, 0);
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(2, 2);
+        graph.AddEdge(1, 2);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(1, 4);
+        graph.AddEdge(2, 5);
+        graph.AddEdge(4, 5);
+        graph.AddEdge(5, 6);
+        graph.AddEdge(5, 7);
+        graph.AddEdge(6, 7);
+        graph.AddEdge(9, 8);
+
+        List<Vertex> list = graph.WeakVertices();
+
+        assertEquals(2, list.size());
+        assertEquals(graph.vertex[4], list.get(0));
+        assertEquals(graph.vertex[8], list.get(1));
     }
 }

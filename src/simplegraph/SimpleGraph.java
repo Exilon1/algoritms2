@@ -1,7 +1,10 @@
 package simplegraph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class Vertex {
     public int Value;
@@ -241,5 +244,41 @@ class SimpleGraph {
         int index = getVertexIndex(vert);
 
         return breadthFirstSearch(queue, paths, index, VTo);
+    }
+
+    public ArrayList<Vertex> WeakVertices() {
+        clearSearchInfo();
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (vertex[i].isHit()) {
+                continue;
+            }
+
+            List<Integer> adjacent = new ArrayList<>();
+
+            for (int j = 0; j < max_vertex; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                if (m_adjacency[i][j] == 1 && !vertex[j].isHit()) {
+                    adjacent.add(j);
+                }
+            }
+
+            for (int j = 0; j < adjacent.size(); j++) {
+                for (int k = j + 1; k < adjacent.size(); k++) {
+                    if (IsEdge(adjacent.get(j), adjacent.get(k))) {
+                        vertex[i].setHit(true);
+                        vertex[adjacent.get(j)].setHit(true);
+                        vertex[adjacent.get(k)].setHit(true);
+                    }
+                }
+            }
+        }
+
+        return Arrays.stream(vertex)
+                .filter(v -> !v.isHit())
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
